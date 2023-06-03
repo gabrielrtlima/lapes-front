@@ -1,23 +1,9 @@
-import { parseCookies } from "nookies";
-import { ListaProtocolo } from "../../components/pages/Protocolo/ListaProtocolo";
-import { ProtocoloRascunho } from "../../components/pages/Protocolo/FormProtocolo";
-import { NextPageContext } from "next";
-import { getFilesFromCookie } from "@/src/utils/protocolo/manageCookieData";
+import { ListaProtocolo } from "@/src/components/pages/Protocolo/ListaProtocolo";
 
-export default function Home({ protocoloRascunho }: { protocoloRascunho: ProtocoloRascunho }) {
-  return(
+export default function Home() {
+  return (
     <>
-      <ListaProtocolo/>
+      <ListaProtocolo />
     </>
-  )
+  );
 }
-
-// export async function getServerSideProps(ctx: NextPageContext) {
-//   const { protocoloRascunho } = parseCookies(ctx)
-//   getFilesFromCookie()
-//   return {
-//     props: {
-//       protocoloRascunho: JSON.parse(protocoloRascunho)
-//     }
-//   }
-// }

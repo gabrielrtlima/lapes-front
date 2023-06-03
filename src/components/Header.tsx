@@ -8,10 +8,10 @@ interface ChildComponentProps {
 }
 
 export const Header: React.FC<ChildComponentProps> = ({ toggleTheme, isDark }) => {
- 
+
   return (
     <Navbar>
-      <button onClick={toggleTheme}>{isDark ? <BsFillSunFill color="white"/> : <BsFillMoonStarsFill />} </button>
+      <button onClick={toggleTheme}>{isDark ? <BsFillSunFill color="white" /> : <BsFillMoonStarsFill />} </button>
     </Navbar>
   )
 }
