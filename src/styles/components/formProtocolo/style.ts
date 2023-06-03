@@ -1,25 +1,20 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const FormContainer = styled.main`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  background-color: ${props => props.theme.colors.primary};
+  background-color: ${(props) => props.theme.colors.primary};
   height: 60vh;
   width: 60vw;
   margin: 30px auto;
   border-radius: 8px;
-
-`
+`;
 
 export const SubmitButton = styled.button`
-  bottom: 10px;
-  right: auto;
   border: 0;
   border-radius: 8px;
-  background-color: ${props => props.theme.colors.button};
-  width: fit-content;
-  margin: 6px auto;
+  background-color: ${(props) => props.theme.colors.button};
   padding: 12px;
   color: #fff;
   font-weight: 600;
@@ -31,7 +26,7 @@ export const SubmitButton = styled.button`
     background-color: #ccc;
     cursor: not-allowed;
   }
-`
+`;
 
 export const NullContainer = styled.div`
   display: flex;
@@ -43,13 +38,16 @@ export const NullContainer = styled.div`
   span {
     font-size: 5rem;
   }
-`
+`;
 
-export const DragContainer = styled.div<{ isDragging: boolean}>`
+export const DragContainer = styled.div<{ isDragging: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${isDragging => isDragging ? props=>props.theme.colors.secondary : props=>props.theme.colors.primary};
+  background-color: ${(isDragging) =>
+    isDragging
+      ? (props) => props.theme.colors.secondary
+      : (props) => props.theme.colors.primary};
   color: #fff;
   width: 90%;
   margin: 12px auto;
@@ -58,7 +56,7 @@ export const DragContainer = styled.div<{ isDragging: boolean}>`
   border-radius: 8px;
 
   div {
-    display : flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     gap: 6px;
@@ -68,7 +66,7 @@ export const DragContainer = styled.div<{ isDragging: boolean}>`
     font-size: 12px;
     color: #ccc;
   }
-`
+`;
 
 export const FileContainer = styled.div`
   display: flex;
@@ -76,20 +74,21 @@ export const FileContainer = styled.div`
   min-height: 60%;
   gap: 8px;
   overflow-y: auto;
-`
+`;
 
 export const FileHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 6px;
   cursor: pointer;
-`
+`;
 
-export const FileContent= styled.div<{ isRascunho: boolean }>`
+export const FileContent = styled.div<{ isRascunho: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: ${props => props.isRascunho ? 'rgba(254, 121, 104,0.2);' : '#66cc99'};
+  background-color: ${(props) =>
+    props.isRascunho ? props.theme.colors.failed : props.theme.colors.success};
   gap: 2px;
   width: 90%;
   margin: 0 auto;
@@ -97,7 +96,7 @@ export const FileContent= styled.div<{ isRascunho: boolean }>`
   border: 0;
   border-radius: 8px;
   flex-wrap: wrap;
-`
+`;
 
 export const FileEdit = styled.div<{ isRascunho: boolean }>`
   display: flex;
@@ -106,21 +105,23 @@ export const FileEdit = styled.div<{ isRascunho: boolean }>`
   gap: 12px;
   height: 100%;
 
-
   button {
     border: 0;
     background-color: transparent;
     cursor: pointer;
 
     text-transform: uppercase;
-    color: ${props => props.isRascunho ? props.theme.colors.textlink1 : props.theme.colors.textlink2};
-    font-weight: ${props => props.isRascunho ? '600' : '400'};
+    color: ${(props) =>
+      props.isRascunho
+        ? props.theme.colors.textlink1
+        : props.theme.colors.textlink2};
+    font-weight: ${(props) => (props.isRascunho ? "600" : "400")};
 
     &:hover {
       filter: brightness(0.8);
     }
   }
-`
+`;
 
 export const ModalContainer = styled.div`
   position: fixed;
@@ -128,33 +129,33 @@ export const ModalContainer = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-`
+`;
 
 export const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  background-color: ${props => props.theme.colors.primary};
+  background-color: ${(props) => props.theme.colors.primary};
   padding: 20px;
   border-radius: 4px;
   position: relative;
 
-  height: 55vh;
-  width: 55vw;
+  height: 60vh;
+  width: 60vw;
 
   h1 {
     text-align: center;
     width: 100%;
     font-weight: 500;
     font-size: 28px;
-    color: ${props => props.theme.colors.textprimary};
+    color: ${(props) => props.theme.colors.textprimary};
 
     span {
-      color: ${props => props.theme.colors.secondary};
+      color: ${(props) => props.theme.colors.secondary};
     }
   }
 
@@ -182,8 +183,7 @@ export const ModalContent = styled.div`
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-
-`
+`;
 
 export const ModalClose = styled.button`
   position: absolute;
@@ -196,11 +196,11 @@ export const ModalClose = styled.button`
   &:hover {
     filter: brightness(0.8);
   }
-`
+`;
 
 export const ModalConfirm = styled.button`
   padding: 8px;
-  margin: 6px auto; 
+  margin: 6px auto;
   border: 0;
   width: fit-content;
   border-radius: 4px;
@@ -213,6 +213,22 @@ export const ModalConfirm = styled.button`
   &:hover {
     filter: brightness(0.98);
   }
-`
+`;
 
+export const CancelButton = styled.button`
+  background-color: ${(props) => props.theme.colors.secondary};
+  border: 0;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 18px;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+`;
 
+export const DivButtons = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+  align-items: center;
+`;
