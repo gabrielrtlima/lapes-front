@@ -1,5 +1,6 @@
+import { FilesContext } from "@/src/contexts/files-context";
 import { ListaBody, ListaContainer, ListaHeader } from "@/src/styles/components/listaProtocolo/style"
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 
 export interface Protocolos {
@@ -36,6 +37,12 @@ export const ListaProtocolo = () => {
       status: 'rascunho'
     }
   ]);
+
+  const {
+    files,
+    filesData
+  } = useContext(FilesContext)
+
   const [openModalIndex, setOpenModalIndex] = useState<number | null>(null);
 
   const [sortConfig, setSortConfig] = useState<{ key: null; direction: string | null }>({ key: null, direction: 'asc' });

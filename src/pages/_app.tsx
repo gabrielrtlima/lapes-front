@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components'
 import { lightTheme, darkTheme } from '../styles/themes'
 import { Header } from '../components/Header'
 import { useState } from 'react'
+import { FilesContextProvider } from '../contexts/files-context'
 
 export default function App({ Component, pageProps }: AppProps) {
   const [isDarkTheme, setIsDarkTheme] = useState(false)
@@ -17,7 +18,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
         <Header toggleTheme={toggleTheme} isDark={isDarkTheme}/>
         <GlobalStyle />
-        <Component {...pageProps} />
+        <FilesContextProvider>
+          <Component {...pageProps} />
+        </FilesContextProvider>
       </ThemeProvider>
     </>
   )

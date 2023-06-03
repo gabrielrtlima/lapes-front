@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DragContainer, FileEdit, FileContainer, FormContainer, NullContainer, SubmitButton, FileContent, FileHeader } from "@/src/styles/components/formProtocolo/style";
 import { AiOutlineClose } from "react-icons/ai";
 import { BsFiletypePdf } from "react-icons/bs";
 import { ModalFileData } from "./ModalFileData";
 import { saveDataInCookie } from "@/src/utils/protocolo/manageCookieData";
+import { FilesContext } from "@/src/contexts/files-context";
+import Link from "next/link";
 
 export interface FileData {
   name: string,
@@ -54,6 +56,11 @@ export const FormProtocolo = () => {
     status: 'rascunho',
     certificadosFile: []
   })
+
+  const {
+    setFiles: setFilesInContext,
+    setFilesData: setFilesDataInContext
+  } = useContext(FilesContext)
 
   useEffect(() => {
     verifyFilesDataIsComplete()
@@ -117,6 +124,10 @@ export const FormProtocolo = () => {
       })),
       certificadosFile: newFiles,
     }
+
+    setFilesInContext([...files, ...newFiles])
+    setFilesDataInContext([...filesData, ...newFilesData])
+
     setFiles([...files, ...newFiles]);
     setFilesData([...filesData, ...newFilesData]);
     setProtocoloRascunho({
@@ -218,6 +229,9 @@ export const FormProtocolo = () => {
         // onClick={submitCertificate}
         disabled={!isFilesDataComplete}
       >enviar</SubmitButton>}
+      <Link href={"/protocolo"}>
+        <button>Teste</button>
+      </Link>
     </FormContainer>
 
   )
