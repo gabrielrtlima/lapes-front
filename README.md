@@ -1,38 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Onboard ALPES - Sistema de AC's
 
-## Getting Started
+## O que é o sistema?
+O sistema será uma forma de rastrear as requisições de AC's feita pelo aluno.
 
-First, run the development server:
+O objetivo do sistema é facilitar o processo, garantir a rastreabilidade das requisições e a padronização das requisições.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+O fluxo atual do sistema vai ser feito da seguinte forma:
+- Aluno
+    - Entrar no sistema
+    - Cadastrar as informações do discente (matricula, cpf, curso, campus e etc)
+    - Adicionar uma requisição
+        - Enviar o(s) certificado(s) 
+        - Preencher dados de cada certificado
+        - Enviar a requisição
+        - Imprimir a requisição e levar à escolaridade
+    - Rastrear por um dashboard o status da requisição
+    - Verificar quantas horas ele tem de cada eixo
+    - Salvar rascunho de certificados
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Coordenação (ainda não definido)
+    - Dashboard com as requisições
+    - Possibilidade de criar uma requisição para um aluno 
+    - Adicionar comentários sobre a requisição do aluno 
+    - Possiblidade de aprovar/reprovar certificados unitariamente
+    - Gerar automaticamente a requisição com a assinatura.
+    - Devolver para o aluno/enviar automaticamente para a escolaridade
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- Sistema
+    - Gerenciar os estados das requisições
+    - Gerar o protocolo tanto inicial quanto final
+    - Guardar rascunhos (2/a definir) de usuário
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## O que estudar para começar no front-end
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+1. HTML (conceitos básicos/intermediário)
+2. CSS (conceitos básicos, flexbox, responsividade)
+3. JavaScript (conceitos básicos, manipulação de DOM, manipulação de arrays (map, forEach), requisições para API usando Fetch, await/async)
+4. TypeScript (entender como funciona os tipos)
+5. Styled Components (css in js, é como fazer css utilizando javascript/typescript)
+6. React (function components, hooks (useState, useEffect), ciclo de vida de um component)
+7. Next (Entender como funciona as rotas, CSR, SSR, SSG, ISR)
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## O que estudar para começar no back-end
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+1. Java (conceitos básicos, programação orientada a objetos, SOLID)
+2. API Rest (conceitos e boas práticas)
+3. Arquitetura MVC
+4. Banco de dados relacional (Postgres)
+5. Ecossistema Spring (Spring data, Spring security, Spring WEB)
