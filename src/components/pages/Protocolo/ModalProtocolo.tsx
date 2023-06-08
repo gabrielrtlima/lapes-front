@@ -1,9 +1,5 @@
 import React from "react";
-import { Protocolos } from "./ListaProtocolo";
-import {
-  ModalContainer,
-  ModalContent,
-} from "@/src/styles/components/formProtocolo/style";
+import { ModalContainer } from "@/src/styles/components/formProtocolo/style";
 import { FormProtocolo } from "./FormProtocolo";
 
 interface ComponentProps {

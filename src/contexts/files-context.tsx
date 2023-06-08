@@ -1,49 +1,34 @@
-import { useState, ReactNode, createContext } from 'react'
-
-type Files = File[]
-
-type FilesData = {
-    name: string,
-    size: number,
-    type: string,
-    status: string,
-    titulo: string | null,
-    descricao: string | null,
-    horas: number | null,
-    eixo: string | null,
-    semestre: number | null,
-    chMaxima: number | null,
-    chTotal: number | null,
-    data: string | null,
-    atividadeId: number | null,
-    protocoloId: number | null
-}[]
+import { useState, ReactNode, createContext } from "react";
+import { CertificadoDTO } from "../utils/types";
 
 type FilesContextProviderProps = {
-    children: ReactNode
-}
+  children: ReactNode;
+};
 
 type FilesContextProps = {
-    files: Files
-    setFiles: (files: Files) => void
-    filesData: FilesData
-    setFilesData: (filesData: FilesData) => void
-}
+  files: File[];
+  setFiles: (files: File[]) => void;
+  certificadoDTO: CertificadoDTO[];
+  setCertificadoDTO: (certificadoDTO: CertificadoDTO[]) => void;
+};
 
-export const FilesContext = createContext({} as FilesContextProps)
+export const FilesContext = createContext({} as FilesContextProps);
 
 export function FilesContextProvider({ children }: FilesContextProviderProps) {
-    const [filesData, setFilesData] = useState<FilesData>({} as FilesData)
-    const [files, setFiles] = useState<Files>({} as Files)
+  const [certificadoDTO, setCertificadoDTO] = useState<CertificadoDTO[]>();
+  const [files, setFiles] = useState<File[]>();
 
-    return (
-        <FilesContext.Provider value={{
-            files,
-            setFiles,
-            filesData,
-            setFilesData
-        }}>
-            {children}
-        </FilesContext.Provider>       
-    )
+  //TODO: Verificar os tipos (undefined)
+  return (
+    <FilesContext.Provider
+      value={{
+        files,
+        setFiles,
+        certificadoDTO,
+        setCertificadoDTO,
+      }}
+    >
+      {children}
+    </FilesContext.Provider>
+  );
 }

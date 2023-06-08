@@ -15,73 +15,50 @@ import { AiOutlineClose } from "react-icons/ai";
 import { BsFiletypePdf } from "react-icons/bs";
 import { ModalFileData } from "./ModalFileData";
 import { FilesContext } from "@/src/contexts/files-context";
-
-//FIX: corrigir todos os tipos
-export interface FileData {
-  name: string;
-  size: number;
-  type: string;
-  status: string;
-  titulo: string | null;
-  descricao: string | null;
-  horas: number | null;
-  eixo: string | null;
-  semestre: number | null;
-  chMaxima: number | null;
-  chTotal: number | null;
-  data: string | null;
-  atividadeId: number | null;
-  protocoloId: number | null;
-}
-
-export interface ProtocoloRascunho {
-  cursoId: number | null;
-  certificados: {
-    descricao: string | null;
-    data: string | null;
-    semestre: number | null;
-    horas: number | null;
-    chMaxima: number | null;
-    chTotal: number | null;
-    atividadeId: number | null;
-    protocoloId: number | null;
-  }[];
-  data: string;
-  qtdCertificado: number;
-  status: string;
-  certificadosFile: File[];
-}
+import {
+  CertificadoDTO,
+  ProtocoloDTO,
+  ProtocoloDadosDTO,
+} from "@/src/utils/types";
+import { ModalRascunho } from "./ModalRascunho";
 
 export const FormProtocolo = ({ closeProtocoloModal }: any) => {
   const [dragging, setDragging] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
-  const [filesData, setFilesData] = useState<FileData[]>([]);
   const [openModalIndex, setOpenModalIndex] = useState<number | null>(null);
+  const [openModalSalvarRascunho, setOpenModalSalvarRascunho] =
+    useState<boolean>(false);
   const [isFilesDataComplete, setIsFilesDataComplete] = useState(false);
-  const [protocoloRascunho, setProtocoloRascunho] = useState<ProtocoloRascunho>(
-    {
-      cursoId: null,
-      certificados: [],
-      data: new Date().toISOString(),
-      qtdCertificado: 0,
-      status: "rascunho",
-      certificadosFile: [],
-    }
-  );
+  const [protocoloDTO, setProtocoloDTO] = useState<ProtocoloDTO>();
+  const [certificadoDTO, setCertificadoDTO] = useState<CertificadoDTO[]>([]);
+  const [protocoloDadosDTO, setProtocoloDadosDTO] =
+    useState<ProtocoloDadosDTO>();
 
-  const { setFiles: setFilesInContext, setFilesData: setFilesDataInContext } =
-    useContext(FilesContext);
+  const {
+    setFiles: setFilesInContext,
+    setCertificadoDTO: setCertificadoInContext,
+  } = useContext(FilesContext);
 
   useEffect(() => {
-    verifyFilesDataIsComplete();
-  }, [filesData]);
-
+    verifyCertificadoPreenchido();
+  }, [certificadoDTO]);
   const openModal = (index: number) => {
     setOpenModalIndex(index);
   };
 
   const closeModal = () => {
+    console.log("close");
     setOpenModalIndex(null);
+  };
+
+  const openModalRascunho = () => {
+    setOpenModalSalvarRascunho(true);
+  };
+
+  //TODO: Criar lógica de salvar rascunho
+  const closeModalRascunhoSemSalvar = () => {
+    setOpenModalSalvarRascunho(false);
+    closeProtocoloModal();
   };
 
   const handleDragEnter = (event: any) => {
@@ -102,105 +79,99 @@ export const FormProtocolo = ({ closeProtocoloModal }: any) => {
     setDragging(false);
 
     const newFiles = Array.from(event.dataTransfer.files as File[]);
-    const newFilesData = newFiles.map((file) => ({
-      name: file.name,
-      size: file.size,
-      type: file.type,
+
+    const newCertificadoDTO = newFiles.map((file) => ({
+      titulo: "",
+      descricao: "",
+      atividadeId: 1,
+      dataCertificado: "",
+      horas: 0,
       status: "rascunho",
-      titulo: null,
-      descricao: null,
-      horas: null,
-      eixo: null,
-      semestre: 12,
-      chMaxima: null,
-      chTotal: null,
-      atividadeId: null,
-      protocoloId: null,
-      data: null,
+      nomeArquivo: file.name,
     }));
 
-    const newProtocoloJson = {
-      qtdCertificado: newFiles.length,
-      certificados: newFilesData.map((file) => ({
-        descricao: file.descricao,
-        data: file.data,
-        semestre: file.semestre,
-        horas: file.horas,
-        chMaxima: file.chMaxima,
-        chTotal: file.chTotal,
-        atividadeId: file.atividadeId,
-        protocoloId: file.protocoloId,
-      })),
-      certificadosFile: newFiles,
-    };
-
-    setFilesInContext([...files, ...newFiles]);
-    setFilesDataInContext([...filesData, ...newFilesData]);
-
     setFiles([...files, ...newFiles]);
-    setFilesData([...filesData, ...newFilesData]);
-    setProtocoloRascunho({
-      ...protocoloRascunho,
-      ...newProtocoloJson,
-    });
+    setCertificadoDTO([...certificadoDTO, ...newCertificadoDTO]);
+    setFilesInContext([...files, ...newFiles]);
+    setCertificadoInContext([...certificadoDTO, ...newCertificadoDTO]);
   };
 
   const handleRemoveFile = (index: number) => {
     const updatedFiles = [...files];
-    const updatedFilesData = [...filesData];
+    const updatedCertificadoDTO = [...certificadoDTO];
     updatedFiles.splice(index, 1);
-    updatedFilesData.splice(index, 1);
+    updatedCertificadoDTO.splice(index, 1);
     setFiles(updatedFiles);
-    setFilesData(updatedFilesData);
+    setCertificadoDTO(updatedCertificadoDTO);
   };
 
-  const handleFileData = (
+  const handleCertificadoDTO = (
     event: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
     >,
     index: number,
-    label: keyof FileData
+    label: keyof CertificadoDTO
   ) => {
-    const updatedData = [...filesData];
-    updatedData[index] = {
-      ...updatedData[index],
+    const updatedCertificado = [...certificadoDTO];
+
+    updatedCertificado[index] = {
+      ...updatedCertificado[index],
       [label]: event.target.value,
     };
-    setFilesData(updatedData);
+
+    setCertificadoDTO(updatedCertificado);
   };
 
   const handleFileStatus = (index: number, status: string) => {
-    const updatedData = [...filesData];
-    updatedData[index] = {
-      ...updatedData[index],
+    const updatedCertificadoDTO = [...certificadoDTO];
+    updatedCertificadoDTO[index] = {
+      ...updatedCertificadoDTO[index],
       status,
     };
-    setFilesData(updatedData);
+    setCertificadoDTO(updatedCertificadoDTO);
     closeModal();
-    console.log(filesData);
   };
 
-  // const submitCertificate = async () => {
-  //
-  //   const formData = new FormData();
-  //   files.forEach((file) => {
-  //     formData.append(`certificados`, file);
-  //   })
-  //   formData.append('protocoloJson', new Blob([JSON.stringify(protocoloJson)], {type: 'application/json'}));
-  //   formData.append('protocolo', files[0]);
-  //
-  //   await fetch('http://localhost:8080/api/protocolo', {
-  //     method: 'POST',
-  //     body: formData
-  //   })
-  //
-  // }
+  const submitCertificate = async () => {
+    setProtocoloDadosDTO({
+      dataProtocolo: new Date().toISOString(),
+      cursoId: 1, //TODO: MODIFICAR QND TIVER AUTENTICAÇÃO
+      usuarioId: 1, //TODO: MODIFICAR QND TIVER AUTENTICAÇÃO
+      qtdCertificados: certificadoDTO.length,
+      semestre: 1, //TODO: MODIFICAR QUANDO TIVER AUTENTICAÇÃO
+    });
 
-  const verifyFilesDataIsComplete = () => {
-    const filesDataComplete = filesData.filter(
-      (file) => file.status == "pronto"
+    setProtocoloDTO({
+      protocoloArquivo: null, //TODO: MODIFICAR QUANDO DISCUTIR SE VAI SER ENVIADO OU GERADO
+      certificadosArquivos: files,
+      dadosCertificados: certificadoDTO,
+    });
+
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append(`certificados`, file);
+    });
+    formData.append(
+      "certificadoMetadados",
+      new Blob([JSON.stringify(certificadoDTO)], { type: "application/json" })
     );
-    if (filesDataComplete.length == filesData.length) {
+    formData.append("protocolo", protocoloDTO?.protocoloArquivo!);
+
+    const url = `http://localhost:8080/api/protocolo?data=${protocoloDadosDTO?.dataProtocolo}
+                  &usuarioId=${protocoloDadosDTO?.usuarioId}&cursoId=${protocoloDadosDTO?.cursoId}
+                  &semestre=${protocoloDadosDTO?.semestre}&qtdCertificados=${protocoloDadosDTO?.qtdCertificados}`;
+    await fetch(url, {
+      method: "POST",
+      body: formData,
+    });
+  };
+
+  const verifyCertificadoPreenchido = () => {
+    const certificadoDTOCompleto = certificadoDTO.filter(
+      (certificado) => certificado.status == "pronto" //TODO: DEFINIR NOME DOS STATUS
+    );
+
+    if (certificadoDTOCompleto.length == certificadoDTO.length) {
       setIsFilesDataComplete(true);
     } else {
       setIsFilesDataComplete(false);
@@ -208,20 +179,19 @@ export const FormProtocolo = ({ closeProtocoloModal }: any) => {
   };
 
   return (
-    <FormContainer>
-      <DragContainer
-        onDragEnter={handleDragEnter}
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
-        isDragging={dragging}
-      >
-        {filesData.length > 0 ? (
+    <FormContainer
+      onDragEnter={handleDragEnter}
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+    >
+      <DragContainer isDragging={dragging}>
+        {certificadoDTO.length > 0 ? (
           <div>
             Você pode adicionar mais certificados!
             <span>
-              Você já adicionou {filesData.length}{" "}
-              {filesData.length == 1 ? "certificado" : "certificados"}
+              Você já adicionou {certificadoDTO.length}{" "}
+              {certificadoDTO.length == 1 ? "certificado" : "certificados"}
             </span>
           </div>
         ) : (
@@ -237,11 +207,11 @@ export const FormProtocolo = ({ closeProtocoloModal }: any) => {
         </NullContainer>
       ) : (
         <FileContainer>
-          {filesData.map((file, index) => (
+          {certificadoDTO.map((file, index) => (
             <FileContent key={index} isRascunho={file.status == "rascunho"}>
               <FileHeader onClick={() => openModal(index)}>
                 <BsFiletypePdf size={24} />
-                <p>{file.name}</p>
+                <p>{file.nomeArquivo}</p>
               </FileHeader>
               <FileEdit isRascunho={file.status == "rascunho"}>
                 <button onClick={() => openModal(index)}>
@@ -256,10 +226,11 @@ export const FormProtocolo = ({ closeProtocoloModal }: any) => {
               {openModalIndex === index && (
                 <ModalFileData
                   closeModal={closeModal}
-                  handleFileData={handleFileData}
+                  handleCertificadoDTO={handleCertificadoDTO}
                   handleFileStatus={handleFileStatus}
                   index={index}
-                  file={file}
+                  certificadoDTO={file}
+                  file={files[index]}
                 />
               )}
             </FileContent>
@@ -267,7 +238,7 @@ export const FormProtocolo = ({ closeProtocoloModal }: any) => {
         </FileContainer>
       )}
       <DivButtons>
-        <CancelButton onClick={closeProtocoloModal}>Cancelar</CancelButton>
+        <CancelButton onClick={openModalRascunho}>Cancelar</CancelButton>
         {files.length > 0 && (
           <SubmitButton
             // onClick={submitCertificate}
@@ -277,6 +248,9 @@ export const FormProtocolo = ({ closeProtocoloModal }: any) => {
           </SubmitButton>
         )}
       </DivButtons>
+      {openModalSalvarRascunho && (
+        <ModalRascunho closeModal={closeModalRascunhoSemSalvar} />
+      )}
     </FormContainer>
   );
 };

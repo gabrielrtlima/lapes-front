@@ -14,7 +14,7 @@ export const FormContainer = styled.main`
 export const SubmitButton = styled.button`
   border: 0;
   border-radius: 8px;
-  background-color: ${(props) => props.theme.colors.button};
+  background-color: ${(props) => props.theme.colors.success};
   padding: 12px;
   color: #fff;
   font-weight: 600;
@@ -48,7 +48,7 @@ export const DragContainer = styled.div<{ isDragging: boolean }>`
     isDragging
       ? (props) => props.theme.colors.secondary
       : (props) => props.theme.colors.primary};
-  color: #fff;
+  color: ${(props) => props.theme.colors.textlink2};
   width: 90%;
   margin: 12px auto;
   min-height: 15%;
@@ -64,7 +64,8 @@ export const DragContainer = styled.div<{ isDragging: boolean }>`
 
   span {
     font-size: 12px;
-    color: #ccc;
+    color: ${(props) => props.theme.colors.primary};
+    font-weight: bold;
   }
 `;
 
@@ -204,7 +205,7 @@ export const ModalConfirm = styled.button`
   border: 0;
   width: fit-content;
   border-radius: 4px;
-  background-color: #66cc99;
+  background-color: ${(props) => props.theme.colors.success};
   color: #fff;
   font-weight: 400;
   font-size: 18px;
@@ -216,7 +217,7 @@ export const ModalConfirm = styled.button`
 `;
 
 export const CancelButton = styled.button`
-  background-color: ${(props) => props.theme.colors.secondary};
+  background-color: ${(props) => props.theme.colors.box[1]};
   border: 0;
   padding: 12px;
   font-weight: 600;
@@ -231,4 +232,5 @@ export const DivButtons = styled.div`
   width: 100%;
   justify-content: space-evenly;
   align-items: center;
+  padding: 6px;
 `;

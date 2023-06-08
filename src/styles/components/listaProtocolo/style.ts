@@ -6,11 +6,17 @@ export const DivButton = styled.div`
   justify-content: flex-end;
 
   button {
+    display: flex;
+    gap: 4px;
+    align-items: center;
     border: 0;
-    background-color: #e5e5e5;
+    background-color: ${(props) => props.theme.colors.success};
     padding: 8px;
     border-radius: 8px;
     cursor: pointer;
+    color: ${(props) => props.theme.colors.textlink2};
+    font-weight: bold;
+    font-size: 16px;
 
     &:hover {
       transition: 0.3s;
@@ -53,9 +59,11 @@ export const ListaHeader = styled.thead`
     border-right: 1px solid ${(props) => props.theme.colors.background};
     height: 32px;
     gap: 12px;
+    cursor: pointer;
 
     &:last-child {
       border-right: none;
+      cursor: default;
     }
 
     span {
@@ -68,16 +76,20 @@ export const ListaHeader = styled.thead`
   }
 `;
 
-export const ListaBody = styled.tbody`
-  display: flex;
+export const ListaBody = styled.tbody<{
+  isRascunho: boolean;
+  isEmpty?: boolean;
+}>`
+  display: ${(props) => (props.isEmpty ? "none" : "flex")};
   flex-direction: column;
   justify-content: space-between;
   align-self: center;
   gap: 4px;
   width: 100%;
+
+  ${(props) => props.isRascunho && "border-bottom 1px dashed #000"};
 `;
 
-//TODO: arrumar cores
 export const ProtocoloContainer = styled.tr<{ status: string }>`
   display: flex;
   width: 100%;
@@ -87,13 +99,23 @@ export const ProtocoloContainer = styled.tr<{ status: string }>`
   background-color: ${(props) =>
     props.status === "rascunho"
       ? props.theme.colors.box[2]
-      : props.theme.colors.box[3]};
+      : props.theme.colors.box[1]};
+
+  &:last-child {
+    margin-bottom: 4px;
+  }
 
   td {
     display: flex;
     justify-content: center;
     text-align: center;
     width: 100%;
-    gap: 5px;
+    gap: 8px;
+    text-transform: capitalize;
+
+    svg {
+      color: ${(props) => props.theme.colors.primary};
+      cursor: pointer;
+    }
   }
 `;
